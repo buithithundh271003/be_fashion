@@ -1,9 +1,19 @@
-const MONGODB_URL = "mongodb+srv://buithithundh2003:gqyfoZL6OVHCHENM@cluster0.k9gfi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-const mongoose = require("mongoose")
-const connectDb = ()=>{
-    return mongoose.connect(MONGODB_URL);
+require('dotenv').config();
 
+const MONGODB_URL = process.env.MONGODB_URL || "mongodb://localhost:27017/nhasachtv";
+const mongoose = require("mongoose");
+
+const connectDb = () => {
+    return mongoose.connect(MONGODB_URL)
+        .then(() => {
+            console.log('Connected to MongoDB successfully');
+        })
+        .catch((error) => {
+            console.error('MongoDB connection error:', error);
+            throw error;
+        });
 }
+
 // gqyfoZL6OVHCHENM
 // buithithundh2003
-module.exports = {connectDb};
+module.exports = { connectDb };
