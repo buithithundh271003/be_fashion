@@ -10,7 +10,7 @@ async function createProduct(reqData){
     discount:reqData.discount,
     quantity: reqData.quantity,
     sizes: reqData.sizes,         // Should be an array like ['S', 'M', 'L']
-    colors: reqData.colors,       // Should be an array like ['den', 'trang']
+         // Should be an array like ['den', 'trang']
     images: reqData.images,       
     categoryId: reqData.categoryId,
     chuyenMucId: reqData.chuyenMucId

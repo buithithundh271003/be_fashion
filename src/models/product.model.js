@@ -23,13 +23,9 @@ const productSchema = new Schema({
     },
     sizes: [{
         type: String,
-        enum: ['S', 'M', 'L', 'XL'],
+        
     }],
-    colors: [{
-        type: String,
-        enum: ['den', 'den-trang', 'do', 'hong', 'kem', 'nau', 'tim', 'trang', 'trang-xanh', 'xam', 'xanh'],
-        required: true
-    }],
+
     images: [
         {
             type: Object,

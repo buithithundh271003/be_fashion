@@ -30,7 +30,7 @@ const login = async(req, res)=>{
         }
         // console.log(user)
         const jwt = jwtProvider.taoToken(user._id);
-        // console.log(jwt)
+        console.log(jwt)
         return res.status(200).send({jwt, message:"login success"})
 
     } catch (error) {

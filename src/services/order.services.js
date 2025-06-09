@@ -3,7 +3,7 @@ const Address = require("../models/address.model.js")
 const OrderItem = require("../models/orderItem.model.js")
 const Order = require("../models/order.model.js")
 async function createOrder(user, shippAddress) {
-    console.log(shippAddress)
+    console.log("gg", shippAddress)
     let address;
     const sodienthoai = shippAddress.sodienthoai
     if (shippAddress.sodienthoai) {
@@ -38,35 +38,45 @@ async function createOrder(user, shippAddress) {
         discount: cart.discount,
         totalItem: cart.totalItem,
         giaohangAddress: address,
-        diachi: shippAddress.address
+        diachi: shippAddress.address,
+        orderStatus:"PROCESSING"
     })
     const saveOrder = await createOrder.save();
     return saveOrder;
 }
 async function placeOrder(orderId) {
     const order = await findOrderById(orderId);
-    order.paymentDetails.paymentStatus = "PLACED";
-    order.paymentDetails.paymentStatus = "COMPLETED";
+    console.log(order)
+    order.orderStatus = "PLACED";
+    order.orderStatus = "COMPLETED";
     return await order.save();
 }
 async function confirmOrder(orderId) {
     const order = await findOrderById(orderId);
-    order.paymentDetails.paymentStatus = "XAC NHAN";
+    console.log(order)
+
+    order.orderStatus = "XAC NHAN";
     return await order.save();
 }
 async function shipOrder(orderId) {
     const order = await findOrderById(orderId);
-    order.paymentDetails.paymentStatus = "SHIPPED";
+
+    order.orderStatus= "SHIPPED";
+    console.log(order)
+
     return await order.save();
 }
 async function deliveryOrder(orderId) {
     const order = await findOrderById(orderId);
-    order.paymentDetails.paymentStatus = "DELIVERED";
+    order.orderStatus= "DELIVERED";
+    console.log(order)
     return await order.save();
 }
 async function cancelOrder(orderId) {
     const order = await findOrderById(orderId);
-    order.paymentDetails.paymentStatus = "CANCEL";
+    order.orderStatus = "CANCEL";
+    console.log(order)
+
     return await order.save();
 }
 async function findOrderById(orderId) {

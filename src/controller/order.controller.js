@@ -15,7 +15,7 @@ const findOrderById = async(req, res)=>{
     try {
         // console.log( req.params.id)
         let createOrders = await orderService.findOrderById(req.params.id);
-        // console.log(createOrder)
+        console.log("lll--------",createOrder)
         res.status(201).send(createOrders);
     } catch (error) {
         return res.status(500).send({error:error.message})

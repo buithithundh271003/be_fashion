@@ -3,6 +3,9 @@ const SECRET_KEY = "GJDgjsdgasgwgdgwdbdjfeufw"
 const taoToken = (userId)=>{
     // console.log(userId)
     const token = jwt.sign({userId}, SECRET_KEY,{expiresIn:"48h"})
+    console.log("tokkken",token);
+    console.log("tokkkenid",userId);
+
     return token;
 }
 const getUserIdTuToken = (token)=>{

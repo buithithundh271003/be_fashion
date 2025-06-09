@@ -1,23 +1,41 @@
-const paymentService = require("../services/paymentservice.js")
-const createPayment = async(req, res)=>{
-    try {
-        const payment = await paymentService.creatPayment(req.params.id);
-        return res.status(200).send(payment);
-    } catch (error) {
-        return res.status(500).send(error.message);
-    }
-}
-const updatePaymentInfo = async(req, res)=>{
-    try {
-        await paymentService.updatePaymentInformation(req.query);
-        return res.status(200).send({message:"payment infor update", success:true});
+const { VNPay, ignoreLogger, ProductCode, VnpLocale, dateFormat } = require('vnpay');
+const {getAllOrders}= require("../services/order.services");
 
-    } catch (error) {
-        return res.status(500).send(error.message);
+const createPayment = async(req, res)=>{
+    // console.log(req.user)
+    const user = await req.user;
+    // console.log(user)
+    try {
+        const vnpay = new VNPay({
+            tmnCode: 'ZFIKHLA5',
+            secureSecret: 'EOHPAEGFD4ZV68CEPTP3K62BS1RZG801',
+            vnpayHost: 'https://sandbox.vnpayment.vn',
+            testMode: true, // chế độ test
+            hashAlgorithm: 'SHA512',
+            loggerFn: console.log, // hoặc ignoreLogger nếu muốn ẩn log
+          });
+    
+          const tomorrow = new Date();
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          const vnpayResponse = await vnpay.buildPaymentUrl({
+            vnp_Amount: findCart.total,
+            vnp_IpAddr: '127.0.0.1',
+            vnp_TxnRef: findCart._id,
+            vnp_OrderInfo: `${findCart._id}`,
+            vnp_OrderType: 'Other',
+            vnp_ReturnUrl: 'http://localhost:5001/api/check-payment-vnpay',
+            vnp_Locale: 'vn',
+            vnp_CreateDate: dateFormat(new Date(), 'yyyymmddHHMMss'),
+            vnp_ExpireDate: dateFormat(tomorrow, 'yyyymmddHHMMss'),
+          });
+    
+          return res.status(201).json(vnpayResponse);
         
+    } catch (error) {
+        return res.status(500).send({error:error.message})
     }
 }
 module.exports = {
-    createPayment,
-    updatePaymentInfo
+    createPayment
+   
 }
