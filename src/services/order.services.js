@@ -2,6 +2,8 @@ const cartService = require("../services/cart.services.js");
 const Address = require("../models/address.model.js")
 const OrderItem = require("../models/orderItem.model.js")
 const Order = require("../models/order.model.js")
+const Product = require("../models/product.model.js")
+
 async function createOrder(user, shippAddress) {
     console.log("gg", shippAddress)
     let address;
@@ -27,10 +29,9 @@ async function createOrder(user, shippAddress) {
             discount: item.discount,
            
         })
-
         const creatOrderItem = await orderItem.save();
         orderItems.push(creatOrderItem);
-         const product = await Product.findById(item.product);
+        const product = await Product.findById(item.product);
         if (product) {
             if (product.quantity >= item.quanity) {
                 product.quantity -= item.quanity;
@@ -51,8 +52,6 @@ async function createOrder(user, shippAddress) {
         diachi: shippAddress.address,
         orderStatus:"PROCESSING"
     })
-        console.log("llllllllllllllllllllllll")
-
     const saveOrder = await createOrder.save();
     return saveOrder;
 }
