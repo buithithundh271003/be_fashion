@@ -27,8 +27,18 @@ async function createOrder(user, shippAddress) {
             discount: item.discount,
            
         })
+
         const creatOrderItem = await orderItem.save();
         orderItems.push(creatOrderItem);
+         const product = await Product.findById(item.product);
+        if (product) {
+            if (product.quantity >= item.quanity) {
+                product.quantity -= item.quanity;
+                await product.save();
+            } else {
+                throw new Error(`Sản phẩm ${product.title} không đủ hàng trong kho.`);
+            }
+        }
     }
     const createOrder = new Order({
         user,
@@ -41,6 +51,8 @@ async function createOrder(user, shippAddress) {
         diachi: shippAddress.address,
         orderStatus:"PROCESSING"
     })
+        console.log("llllllllllllllllllllllll")
+
     const saveOrder = await createOrder.save();
     return saveOrder;
 }
